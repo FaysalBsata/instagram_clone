@@ -32,7 +32,9 @@ export default function TabLayout() {
         name="index"
         options={{
           headerTitle: 'For you',
-          tabBarIcon: ({ color }) => <FontAwesome name="home" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <FontAwesome name="home" size={24} color={color} />
+          ),
           headerRight: () => (
             <Link href="/modal" asChild>
               <Pressable>
@@ -53,14 +55,16 @@ export default function TabLayout() {
         name="new"
         options={{
           tabBarIcon: ({ color }) => (
-            <FontAwesome name="plus-square-o" color={color} />
+            <FontAwesome name="plus-square-o" size={24} color={color} />
           ),
         }}
       />
       <Tabs.Screen
         name="profile"
         options={{
-          tabBarIcon: ({ color }) => <FontAwesome name="user" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <FontAwesome name="user" size={24} color={color} />
+          ),
         }}
       />
     </Tabs>
