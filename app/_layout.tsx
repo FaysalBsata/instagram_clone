@@ -10,6 +10,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
 import '../global.css';
+import AuthProvider from '@/providers/AuthProvider';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -50,10 +51,10 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   return (
-    <ThemeProvider value={DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      </Stack>
-    </ThemeProvider>
+    <AuthProvider>
+      <ThemeProvider value={DefaultTheme}>
+        <Stack screenOptions={{ headerShown: false }} />
+      </ThemeProvider>
+    </AuthProvider>
   );
 }
