@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Image, Pressable, TextInput, View, Text } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import CustomButton from '@/Components/CustomButton';
 import { supabase } from '@/lib/supabase';
+import CustomButton from '../Components/CustomButton';
 export default function ProfileScreen() {
   const [image, setImage] = useState<string | null>(null);
   const [userName, setUserName] = useState<string>('');

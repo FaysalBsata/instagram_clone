@@ -1,7 +1,7 @@
-import CustomButton from '@/Components/CustomButton';
 import { supabase } from '@/lib/supabase';
 import React, { useState } from 'react';
 import { Alert, StyleSheet, View, AppState, TextInput } from 'react-native';
+import CustomButton from '../Components/CustomButton';
 
 // Tells Supabase Auth to continuously refresh the session automatically if
 // the app is in the foreground. When this is added, you will continue to receive

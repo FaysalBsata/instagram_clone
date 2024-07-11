@@ -1,11 +1,16 @@
 import { useState } from 'react';
 import { Image, Text, TextInput, View } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import CustomButton from '@/Components/CustomButton';
 import { uploadImage } from '@/lib/cloudinary';
+import { supabase } from '@/lib/supabase';
+import { useAuth } from '@/providers/AuthProvider';
+import { useRouter } from 'expo-router';
+import CustomButton from '../Components/CustomButton';
 export default function CreatePostScreen() {
   const [caption, setCaption] = useState('');
   const [image, setImage] = useState<string | null>(null);
+  const { session } = useAuth();
+  const router = useRouter();
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -23,7 +28,13 @@ export default function CreatePostScreen() {
   const createPost = async () => {
     if (!image) return;
     const response = await uploadImage(image);
-    const id = response?.public_id;
+    const { data, error } = await supabase
+      .from('posts')
+      .insert([
+        { caption, image: response?.public_id, user_id: session?.user?.id },
+      ])
+      .select();
+    router.push('/(tabs)');
   };
   return (
     <View className="p-3 items-center flex-1">
