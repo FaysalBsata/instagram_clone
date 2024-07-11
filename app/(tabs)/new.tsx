@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
-import { Image, Pressable, Text, TextInput, View } from 'react-native';
+import { useState } from 'react';
+import { Image, Text, TextInput, View } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import CustomButton from '@/Components/CustomButton';
+import { uploadImage } from '@/lib/cloudinary';
 export default function CreatePostScreen() {
   const [caption, setCaption] = useState('');
   const [image, setImage] = useState<string | null>(null);
@@ -11,25 +12,26 @@ export default function CreatePostScreen() {
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 1,
+      quality: 0.5,
     });
 
     if (!result.canceled) {
       setImage(result.assets[0].uri);
     }
   };
-  useEffect(() => {
-    if (!image) {
-      pickImage();
-    }
-  }, []);
+
+  const createPost = async () => {
+    if (!image) return;
+    const response = await uploadImage(image);
+    const id = response?.public_id;
+  };
   return (
     <View className="p-3 items-center flex-1">
       <Image
         source={{
           uri: image!,
         }}
-        className="w-52 aspect-[3/4] rounded-lg shadow-md bg-slate-300"
+        className="w-52 aspect-[3/4] rounded-lg bg-slate-300"
       />
       <Text
         onPress={pickImage}
@@ -44,7 +46,7 @@ export default function CreatePostScreen() {
         onChangeText={setCaption}
       />
       <View className="mt-auto w-full">
-        <CustomButton title="Share post" onPress={() => {}} />
+        <CustomButton title="Share post" onPress={createPost} />
       </View>
     </View>
   );

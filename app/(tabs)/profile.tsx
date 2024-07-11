@@ -25,7 +25,7 @@ export default function ProfileScreen() {
           source={{
             uri: image!,
           }}
-          className="w-52 aspect-square self-center rounded-full shadow-md bg-slate-300"
+          className="w-52 aspect-square self-center rounded-full bg-slate-300"
         />
       </Pressable>
       <Text className="text-gray-500 font-semibold mb-2">Username</Text>

@@ -1,14 +1,7 @@
-import {
-  Image,
-  SafeAreaView,
-  Text,
-  useWindowDimensions,
-  View,
-} from 'react-native';
+import { Text, useWindowDimensions, View } from 'react-native';
 import { AntDesign, Feather, Ionicons } from '@expo/vector-icons';
 import { AdvancedImage } from 'cloudinary-react-native';
 import { thumbnail } from '@cloudinary/url-gen/actions/resize';
-import { byRadius } from '@cloudinary/url-gen/actions/roundCorners';
 import { focusOn } from '@cloudinary/url-gen/qualifiers/gravity';
 import { FocusOn } from '@cloudinary/url-gen/qualifiers/focusOn';
 import { cld } from '@/lib/cloudinary';
@@ -25,8 +18,6 @@ const PostListItem = ({ post }: PostListItemProps) => {
   avatar.resize(
     thumbnail().width(48).height(48).gravity(focusOn(FocusOn.face()))
   );
-  console.log(image);
-  const myImage = cld.image('sample');
   return (
     <View className="bg-white">
       <View className="p-3 flex-row items-center gap-2">
@@ -36,7 +27,10 @@ const PostListItem = ({ post }: PostListItemProps) => {
         />
         <Text className="font-semibold">{post.user.username}</Text>
       </View>
-      <AdvancedImage cldImg={image} className="w-full aspect-[4/3]" />
+      <AdvancedImage
+        cldImg={image}
+        style={{ width: '100%', aspectRatio: 4 / 3 }}
+      />
       <View className="p-3">
         <View className="flex-row gap-3">
           <AntDesign name="hearto" size={20} />
