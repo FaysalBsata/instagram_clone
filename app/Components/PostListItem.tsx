@@ -14,7 +14,7 @@ const PostListItem = ({ post }: PostListItemProps) => {
   const image = cld.image(post.image);
   image.resize(thumbnail().width(width).height(width));
 
-  const avatar = cld.image(post.user.avatar_url);
+  const avatar = cld.image(post.user.avatar_url ?? 'user_e8efbv');
   avatar.resize(
     thumbnail().width(48).height(48).gravity(focusOn(FocusOn.face()))
   );
@@ -25,7 +25,9 @@ const PostListItem = ({ post }: PostListItemProps) => {
           cldImg={avatar}
           className="w-12 aspect-square rounded-full"
         />
-        <Text className="font-semibold">{post.user.username}</Text>
+        <Text className="font-semibold">
+          {post.user.username ?? 'New User'}
+        </Text>
       </View>
       <AdvancedImage
         cldImg={image}
