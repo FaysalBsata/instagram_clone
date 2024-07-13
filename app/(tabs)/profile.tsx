@@ -5,8 +5,8 @@ import { supabase } from '@/lib/supabase';
 import CustomButton from '../Components/CustomButton';
 import { useAuth } from '@/providers/AuthProvider';
 import CustomInput from '../Components/CustomInput';
-import { cld, uploadImage } from '@/lib/cloudinary';
-import { AdvancedImage } from 'cloudinary-react-native';
+import { cld, uploadMedia } from '@/lib/cloudinary';
+import { AdvancedImage, upload } from 'cloudinary-react-native';
 import { thumbnail } from '@cloudinary/url-gen/actions/resize';
 export default function ProfileScreen() {
   const [image, setImage] = useState<string | null>(null);
@@ -27,7 +27,6 @@ export default function ProfileScreen() {
     if (error) {
       Alert.alert(error.message);
     }
-    console.log(data);
     if (data) {
       setUserName(data.username);
       setRemoteImage(data.avatar_url);
@@ -43,7 +42,7 @@ export default function ProfileScreen() {
   async function updateProfile() {
     if (!user) return;
     if (image) {
-      const response = await uploadImage(image);
+      const response = await uploadMedia(image);
       updatedProfile.avatar_url = response?.public_id;
     }
     const { data, error } = await supabase
