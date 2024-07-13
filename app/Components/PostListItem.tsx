@@ -16,10 +16,14 @@ type PostListItemProps = {
 const PostListItem = ({ post }: PostListItemProps) => {
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [likes, setLikes] = useState<any>(null);
+  const [likeCount, setLikeCount] = useState<number>(0);
   const { user } = useAuth();
   useEffect(() => {
-    fetchLike();
-  }, []);
+    if (post.my_likes?.length > 0) {
+      setLikes(post.my_likes?.[0]);
+      setIsLiked(true);
+    }
+  }, [post.my_likes]);
   useEffect(() => {
     if (isLiked) {
       saveLike();
@@ -27,18 +31,7 @@ const PostListItem = ({ post }: PostListItemProps) => {
       deleteLike();
     }
   }, [isLiked]);
-  const fetchLike = async () => {
-    const { data } = await supabase
-      .from('likes')
-      .select('*')
-      .eq('user_id', user?.id)
-      .eq('post_id', post.id)
-      .select();
-    if (data && data?.length > 0) {
-      setLikes(data?.[0]);
-      setIsLiked(true);
-    }
-  };
+
   const saveLike = async () => {
     if (likes) return;
     const { data } = await supabase
@@ -69,18 +62,24 @@ const PostListItem = ({ post }: PostListItemProps) => {
         </Text>
       </View>
       <PostContent post={post} />
-      <View className="p-3">
-        <View className="flex-row gap-3">
-          <AntDesign
-            name={isLiked ? 'heart' : 'hearto'}
-            color={isLiked ? 'crimson' : 'black'}
-            onPress={() => setIsLiked(!isLiked)}
-            size={20}
-          />
-          <Ionicons name="chatbubble-outline" size={20} />
-          <Feather name="send" size={20} />
-          <Feather name="bookmark" size={20} className="ml-auto" />
-        </View>
+      <View className="flex-row gap-3 p-3">
+        <AntDesign
+          name={isLiked ? 'heart' : 'hearto'}
+          color={isLiked ? 'crimson' : 'black'}
+          onPress={() => setIsLiked(!isLiked)}
+          size={20}
+        />
+        <Ionicons name="chatbubble-outline" size={20} />
+        <Feather name="send" size={20} />
+        <Feather name="bookmark" size={20} className="ml-auto" />
+      </View>
+
+      <View className="px-3 ">
+        <Text className="font-semibold">{likeCount} likes</Text>
+        <Text className="">
+          <Text className="font-semibold">{post.user.username}</Text>{' '}
+          {post.caption ?? 'No caption provided'}
+        </Text>
       </View>
     </View>
   );
