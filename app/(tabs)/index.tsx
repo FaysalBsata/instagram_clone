@@ -13,7 +13,7 @@ export default function FeedScreen() {
   const fetchPosts = async () => {
     let { data, error } = await supabase
       .from('posts')
-      .select('*, user:profiles(*), my_likes:likes(*)')
+      .select('*, user:profiles(*), my_likes:likes(*), likes(count)')
       // .eq('user_id', user?.id)
       .eq('my_likes.user_id', user?.id)
       .order('created_at', { ascending: false });

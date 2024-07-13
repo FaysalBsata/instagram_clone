@@ -75,7 +75,9 @@ const PostListItem = ({ post }: PostListItemProps) => {
       </View>
 
       <View className="px-3 ">
-        <Text className="font-semibold">{likeCount} likes</Text>
+        <Text className="font-semibold">
+          {post.likes?.[0]?.count || 0} likes
+        </Text>
         <Text className="">
           <Text className="font-semibold">{post.user.username}</Text>{' '}
           {post.caption ?? 'No caption provided'}
