@@ -3,6 +3,7 @@ import React from 'react';
 import { AdvancedImage, AdvancedVideo } from 'cloudinary-react-native';
 import { cld } from '@/lib/cloudinary';
 import { thumbnail, scale } from '@cloudinary/url-gen/actions/resize';
+import { ResizeMode, Video } from 'expo-av';
 type PostContentProps = {
   post: any;
 };
@@ -23,9 +24,15 @@ const PostContent = ({ post }: PostContentProps) => {
     const video = cld.video(post.image);
     video.resize(scale().width(400));
     return (
-      <AdvancedVideo
-        cldVideo={video}
-        videoStyle={{ width: '100%', aspectRatio: 4 / 3 }}
+      <Video
+        style={{ width: '100%', aspectRatio: 4 / 3 }}
+        source={{
+          uri: video.toURL(),
+        }}
+        useNativeControls
+        resizeMode={ResizeMode.CONTAIN}
+        shouldPlay
+        isLooping
       />
     );
   }
