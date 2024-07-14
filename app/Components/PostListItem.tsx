@@ -10,6 +10,7 @@ import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/providers/AuthProvider';
 import DoubleTapPressable from './DoubleTapPressable';
+import { sendLikeNotification } from '../utils/notifications';
 type PostListItemProps = {
   post: any;
   isVisible?: boolean;
@@ -39,6 +40,8 @@ const PostListItem = ({ post, isVisible }: PostListItemProps) => {
       .from('likes')
       .insert([{ user_id: user?.id, post_id: post.id }])
       .select();
+    // send a push not to the owner of the post
+    sendLikeNotification(data?.[0]);
     setLikes(data?.[0]);
   };
   const deleteLike = async () => {

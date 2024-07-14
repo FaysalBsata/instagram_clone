@@ -3,6 +3,7 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Link, Redirect, Tabs } from 'expo-router';
 import { Pressable } from 'react-native';
 import { useAuth } from '@/providers/AuthProvider';
+import NotificationProvider from '@/providers/NotificationProvider';
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
@@ -18,39 +19,41 @@ export default function TabLayout() {
     return <Redirect href={'/(auth)'} />;
   }
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: 'black',
-        // Disable the static render of the header on web
-        // to prevent a hydration error in React Navigation v6.
-        tabBarShowLabel: false,
-      }}
-    >
-      <Tabs.Screen
-        name="index"
-        options={{
-          headerTitle: 'For you',
-          tabBarIcon: ({ color }) => (
-            <FontAwesome name="home" size={24} color={color} />
-          ),
+    <NotificationProvider>
+      <Tabs
+        screenOptions={{
+          tabBarActiveTintColor: 'black',
+          // Disable the static render of the header on web
+          // to prevent a hydration error in React Navigation v6.
+          tabBarShowLabel: false,
         }}
-      />
-      <Tabs.Screen
-        name="new"
-        options={{
-          tabBarIcon: ({ color }) => (
-            <FontAwesome name="plus-square-o" size={24} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="profile"
-        options={{
-          tabBarIcon: ({ color }) => (
-            <FontAwesome name="user" size={24} color={color} />
-          ),
-        }}
-      />
-    </Tabs>
+      >
+        <Tabs.Screen
+          name="index"
+          options={{
+            headerTitle: 'For you',
+            tabBarIcon: ({ color }) => (
+              <FontAwesome name="home" size={24} color={color} />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="new"
+          options={{
+            tabBarIcon: ({ color }) => (
+              <FontAwesome name="plus-square-o" size={24} color={color} />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="profile"
+          options={{
+            tabBarIcon: ({ color }) => (
+              <FontAwesome name="user" size={24} color={color} />
+            ),
+          }}
+        />
+      </Tabs>
+    </NotificationProvider>
   );
 }
