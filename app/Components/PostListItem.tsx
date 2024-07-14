@@ -9,6 +9,7 @@ import PostContent from './PostContent';
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/providers/AuthProvider';
+import DoubleTapPressable from './DoubleTapPressable';
 type PostListItemProps = {
   post: any;
 };
@@ -50,6 +51,7 @@ const PostListItem = ({ post }: PostListItemProps) => {
   avatar.resize(
     thumbnail().width(48).height(48).gravity(focusOn(FocusOn.face()))
   );
+
   return (
     <View className="bg-white">
       <View className="p-3 flex-row items-center gap-2">
@@ -61,7 +63,9 @@ const PostListItem = ({ post }: PostListItemProps) => {
           {post.user.username ?? 'New User'}
         </Text>
       </View>
-      <PostContent post={post} />
+      <DoubleTapPressable onDoubleTap={() => setIsLiked(!isLiked)}>
+        <PostContent post={post} />
+      </DoubleTapPressable>
       <View className="flex-row gap-3 p-3">
         <AntDesign
           name={isLiked ? 'heart' : 'hearto'}
