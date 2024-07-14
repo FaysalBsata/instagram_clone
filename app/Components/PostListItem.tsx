@@ -12,12 +12,12 @@ import { useAuth } from '@/providers/AuthProvider';
 import DoubleTapPressable from './DoubleTapPressable';
 type PostListItemProps = {
   post: any;
+  isVisible?: boolean;
 };
 
-const PostListItem = ({ post }: PostListItemProps) => {
+const PostListItem = ({ post, isVisible }: PostListItemProps) => {
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [likes, setLikes] = useState<any>(null);
-  const [likeCount, setLikeCount] = useState<number>(0);
   const { user } = useAuth();
   useEffect(() => {
     if (post.my_likes?.length > 0) {
@@ -64,7 +64,7 @@ const PostListItem = ({ post }: PostListItemProps) => {
         </Text>
       </View>
       <DoubleTapPressable onDoubleTap={() => setIsLiked(!isLiked)}>
-        <PostContent post={post} />
+        <PostContent post={post} {...{ isVisible }} />
       </DoubleTapPressable>
       <View className="flex-row gap-3 p-3">
         <AntDesign

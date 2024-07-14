@@ -1,7 +1,7 @@
 // import posts from '@/assets/data/posts.json';
 import { supabase } from '@/lib/supabase';
-import { useEffect, useState } from 'react';
-import { Alert, FlatList } from 'react-native';
+import { useEffect, useRef, useState } from 'react';
+import { Alert, FlatList, ViewabilityConfig, ViewToken } from 'react-native';
 import PostListItem from '../Components/PostListItem';
 import { useAuth } from '@/providers/AuthProvider';
 export default function FeedScreen() {
@@ -22,13 +22,31 @@ export default function FeedScreen() {
     }
     setPosts(data);
   };
+  const [visiblePostId, setVisiblePostId] = useState<number | null>(null);
+
+  const viewabilityConfig = useRef<ViewabilityConfig>({
+    itemVisiblePercentThreshold: 50,
+  }).current;
+
+  const onViewableItemsChanged = useRef(
+    ({ viewableItems }: { viewableItems: ViewToken[] }) => {
+      if (viewableItems.length > 0) {
+        const firstVisibleItem = viewableItems[0].item as any;
+        setVisiblePostId(firstVisibleItem.id);
+      }
+    }
+  ).current;
   return (
     <FlatList
       data={posts}
-      renderItem={({ item }) => <PostListItem post={item} />}
+      renderItem={({ item }) => (
+        <PostListItem post={item} isVisible={item.id === visiblePostId} />
+      )}
       keyExtractor={(item) => item.id.toString()}
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{ gap: 10 }}
+      onViewableItemsChanged={onViewableItemsChanged}
+      viewabilityConfig={viewabilityConfig}
     />
   );
 }

@@ -1,14 +1,15 @@
 import { useWindowDimensions } from 'react-native';
 import React from 'react';
-import { AdvancedImage, AdvancedVideo } from 'cloudinary-react-native';
+import { AdvancedImage } from 'cloudinary-react-native';
 import { cld } from '@/lib/cloudinary';
 import { thumbnail, scale } from '@cloudinary/url-gen/actions/resize';
 import { ResizeMode, Video } from 'expo-av';
 type PostContentProps = {
   post: any;
+  isVisible?: boolean;
 };
 
-const PostContent = ({ post }: PostContentProps) => {
+const PostContent = ({ post, isVisible }: PostContentProps) => {
   const { width } = useWindowDimensions();
   if (post.media_type === 'image') {
     const image = cld.image(post.image);
@@ -31,7 +32,8 @@ const PostContent = ({ post }: PostContentProps) => {
         }}
         useNativeControls
         resizeMode={ResizeMode.CONTAIN}
-        shouldPlay
+        shouldPlay={isVisible}
+        isMuted={!isVisible}
         isLooping
       />
     );
